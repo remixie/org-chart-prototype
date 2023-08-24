@@ -20,9 +20,19 @@ const svgElementContainer = ref(null);
 
 watch(chartReference, (value) => renderChart(value));
 
+const color_list = {
+  'CTO office' : 'bg-[#aa0000] text-white',
+  'CFO office': 'bg-[#00aa00] text-white',
+  'CEO office' :'bg-[#0000aa] text-white',
+  'COO office' : 'bg-[#aa9900] text-white'
+}
+const color = (str: String)=>{
+  return color_list[str]
+}
+
 onMounted(async () => {
   const data = await d3.csv(
-    'https://raw.githubusercontent.com/bumbeishvili/sample-data/main/org.csv'
+    '/example.csv'
   );
   //console.log(data);
 
@@ -30,7 +40,7 @@ onMounted(async () => {
     .nodeContent(function (d, i, arr, state) {
       return `
       <div class='bg-gray-200 h-full rounded-xl pt-2'>
-        <div class='bg-blue-600 text-center text-white text-sm font-bold rounded-md mx-2'>${d.data.name}</div>
+        <div class='${color(d.data.office)} text-center  text-sm font-bold rounded-md mx-2'>${d.data.name}</div>
         <div class='text-center uppercase mt-2 pb-2'>${d.data.positionName}</div>
         <div class='grid grid-cols-3'>
           <div class='col-span-1 bg-white rounded-full h-20 w-20 ml-2'>
@@ -53,7 +63,6 @@ onMounted(async () => {
 
 <template>
   <div ref="svgElementContainer" class="chart-container"></div>
-  <!--<div class="text-xs">{{ json }}</div>-->
 </template>
 
 <style scoped></style>
